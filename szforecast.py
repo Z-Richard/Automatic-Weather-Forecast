@@ -1,8 +1,13 @@
+"""
+The Code Snippet to process the Shenzhen Forecast.
+
+Author: Haoyu Zhuang
+Date: April 5, 2020
+"""
+
 import urllib.request, urllib.error
 import json
-
-url = 'http://data.121.com.cn/szmbdata/open/openData.do?type=2&' \
-      'appid=1515681035076&appKey=a2a08d7a-50fc-4e4d-8dcc-21346de76936'
+import url_const
 
 
 def request_data(url):
@@ -18,7 +23,7 @@ def request_data(url):
 
 
 def get_sz_forecast():
-    data = request_data(url)
+    data = request_data(url_const.szForecastUrl)
     forecast = data['data']['forecast10d']['list'][0]
     max_t = forecast['maxt']
     min_t = forecast['mint']

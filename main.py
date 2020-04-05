@@ -1,8 +1,17 @@
+"""
+The main function to run. This code snippet calculates the night_index, wet_index,
+along with other features that are extremely useful in the daily life.
+
+Author: Haoyu Zhuang
+Time: April 5th, 2020
+"""
+
 import windy
 import windy_rain
 import weathernow
 import hkforecast
 import szforecast
+from const import *
 
 """
 To-do list: 
@@ -12,50 +21,6 @@ so that the user doesn't have to calculate the average temperature in the past 5
 2. Train a machine-learning model to predict the maximum and minimum temperature more accurately.
 As for now, function maximum_temperature() and minimum_temperature() will not be used. 
 """
-
-min_humidity = {
-    "春季": {"SKC": 5, "FEW": 5, "SCT": 0, "BKN": 0, "OVC": 0},
-    "夏季": {"SKC": 5, "FEW": 5, "SCT": 0, "BKN": 0, "OVC": 0},
-    "秋季": {"SKC": -5, "FEW": -5, "SCT": -10, "BKN": -10, "OVC": -15},
-    "冬季": {"SKC": 0, "FEW": 0, "SCT": -10, "BKN": -10, "OVC": -15}
-}
-
-max_humidity = {
-    "春季": {"SKC": 5, "FEW": 5, "SCT": 0, "BKN": 0, "OVC": 0},
-    "夏季": {"SKC": 5, "FEW": 5, "SCT": 0, "BKN": -5, "OVC": -5},
-    "秋季": {"SKC": 0, "FEW": 0, "SCT": -10, "BKN": -10, "OVC": -10},
-    "冬季": {"SKC": 0, "FEW": 0, "SCT": -10, "BKN": -10, "OVC": -10}
-}
-
-star = {
-    "SKC": "极好", "FEW": "好", "SCT": "一般", "BKN": "差", "OVC": "极差"
-}
-
-cloud_index = {
-    "SKC": 4, "FEW": 4, "SCT": 3, "BKN": 3, "OVC": 2
-}
-
-insect_value = {
-    1: "没有威胁", 2: "敏感人群需防护", 3: "需做简单防护", 4: "需做周到防护", 5: "急需做周到防护"
-}
-
-clothing_value = {
-    1: "短袖短裤（紧急防暑）", 2: "短袖（注意防暑）", 2.5: "短袖", 3: "单衣或外套", 3.5: "外套", 4: "外套或毛衣",
-    4.5: "毛衣或棉袄（防寒）", 5: "棉袄秋裤（紧急防寒）"
-}
-
-wet_value = {
-    1: "地面干燥", 2: "有少数地方积水", 3: "地面较为湿滑", 4: "地面湿滑（轻微回南天）", 5: "显著回南天"
-}
-
-outdoor_value = {
-    0: (1, '不适宜'), 1: (2, '较不适宜'), 2: (3, '比较适宜'), 4: (3, '比较适宜'),
-    8: (4, '适宜'), 16: (4, '适宜'), 32: (5, '非常适宜')
-}
-
-drying_value = {
-    1: "需收回衣物", 2: "不适宜晾晒", 3: "晾晒效果较差", 4: "适宜晾晒", 5: "非常适合晾晒"
-}
 
 
 def night_index(c_rate):

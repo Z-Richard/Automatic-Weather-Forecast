@@ -1,10 +1,3 @@
-import urllib.request, urllib.error
-import json
-import math
-
-lat = 22.580
-lon = 114.247
-
 """
 1. Data from Meteogram URL includes information about all-level (from surface to 150hpa) dew point temperature,
 geopotential height, relative humidity (which may be used to compute cloud rate at different levels),
@@ -20,10 +13,15 @@ from 20:00 at UTC+8, China).
 6 - 17:00, 7 - 20:00, 8 - 23:00, 9 - 2:00, 10 - 5:00, 11 - 8:00,
 12 - 11:00, 13 - 14:00, 14 - 17:00, 15 - 20:00
 We want to focus more on [6:15] (from 17:00 to 17:00 the next day) for deciding the wet_index().
+
+Author: Haoyu Zhuang
+Time: April 5, 2020
 """
 
-meteogram_url = 'https://node.windy.com/forecast/meteogram/ecmwf/' + str(lat) + '/' + str(lon)
-url = 'https://node.windy.com/forecast/v2.1/ecmwf/' + str(lat) + '/' + str(lon)
+import urllib.request, urllib.error
+import json
+import math
+import url_const
 
 
 def request_data(url):
@@ -41,7 +39,7 @@ def process_dew_data():
     :return: wall_sweating, a number, 0 - no wall-sweating, 1 - slight or moderate, 2 - strong
     dew_point, an array, that presents average dew_point temperature from 8:00 - 17:00 the next day
     """
-    data = request_data(url)
+    data = request_data(url_const.windyUrl)
 
     dew_point = data['data']['dewPoint'][6:15]
     temperature = data['data']['temp'][6:15]
@@ -65,13 +63,13 @@ def process_wind_data():
     the maximum of surface wind;
     the maximum of surface gust;
     """
-    data = request_data(meteogram_url)
+    data = request_data(url_const.meteogramUrl)
     wind_900_v = data['data']['wind_v-900h'][6:15]
     wind_900_u = data['data']['wind_u-900h'][6:15]
     wind_900_direction = [wind_direction((270 - math.atan2(v, u) * 180 / math.pi) % 360)
                           for v, u in zip(wind_900_v, wind_900_u)]
     wind_900 = [math.sqrt(v * v + u * u) for v, u in zip(wind_900_v, wind_900_u)]
-    second_data = request_data(url)
+    second_data = request_data(url_const.windyUrl)
     wind_surface = second_data['data']['wind'][6:15]
     gust_surface = second_data['data']['gust'][6:15]
     wind_surface_dir = second_data['data']['windDir'][13]
@@ -89,7 +87,7 @@ def process_weather_code():
     OVC - 8 oktas, full cloud coverage
     :return: weather_code that appears most frequently from the 17:00 to 17:00 period
     """
-    data = request_data(url)
+    data = request_data(url_const.windyUrl)
     weather_code = [a.split(',')[0] for a in (data['data']['weathercode'][6:15])]
     return weather_code
 

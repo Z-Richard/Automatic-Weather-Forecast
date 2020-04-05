@@ -1,8 +1,13 @@
+"""
+The Code Snippet to process the current weather data.
+
+Author: Haoyu Zhuang
+Date: April 5, 2020
+"""
+
 import urllib.request, urllib.error
 import json
-
-url = 'http://data.121.com.cn/szmbdata/open/openData.do?type=17&' \
-      'appid=1550582904725&appKey=bb351c34-3c61-4174-b55b-e9c833a10567'
+import url_const
 
 
 def request_data(url):
@@ -18,7 +23,7 @@ def request_data(url):
 
 
 def get_weather_now():
-    data = request_data(url)
+    data = request_data(url_const.szWeatherNowUrl)
     sfls_data = [a for a in data['data'] if a['name'] == '明珠'][0]
     day_max_t = sfls_data['maxtday']
     day_min_t = sfls_data['mintday']

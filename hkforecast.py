@@ -1,7 +1,13 @@
+"""
+The Code Snippet to process the HK forecast.
+
+Author: Haoyu Zhuang
+Date: April 5, 2020
+"""
+
 import urllib.request, urllib.error
 import json
-
-url = 'https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=fnd&lang=sc'
+import url_const
 
 
 def request_data(url):
@@ -15,7 +21,7 @@ def request_data(url):
 
 
 def get_hk_forecast():
-    data = request_data(url)
+    data = request_data(url_const.hkForecastUrl)
     weather = data['weatherForecast'][0]
     date = weather['forecastDate'][4:6] + '-' + weather['forecastDate'][6:]
     max_t = weather['forecastMaxtemp']['value']
